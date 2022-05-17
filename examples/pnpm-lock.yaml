@@ -9,7 +9,7 @@ specifiers:
   '@types/react-dom': ^17.0.9
   '@vitejs/plugin-react': ^1.3.2
   autoprefixer: ^10.4.4
-  cloudflare-pages-plugin: ../
+  cloudflare-pages-plugin-trpc: 0.0.1
   postcss: ^8.4.12
   prettier: ^2.5.1
   react: ^18.0.0
@@ -27,7 +27,7 @@ dependencies:
   '@tailwindcss/forms': 0.5.1_tailwindcss@3.0.24
   '@trpc/client': 10.0.0-alpha.22
   '@trpc/react': 10.0.0-alpha.22_9632810399f14188af0a6da44f003bf3
-  cloudflare-pages-plugin: link:..
+  cloudflare-pages-plugin-trpc: 0.0.1
   react: 18.1.0
   react-dom: 18.1.0_react@18.1.0
   react-query: 3.39.0_react-dom@18.1.0+react@18.1.0
@@ -593,6 +593,12 @@ packages:
       react-query: 3.39.0_react-dom@18.1.0+react@18.1.0
     dev: false
 
+  /@trpc/server/10.0.0-alpha.22:
+    resolution: {integrity: sha512-Xo8/lTwQx6fX+DtrxmScVTSfW8AtMoG1/NUw0WbMqdQ+IWuNK7p69vsDKSga3i+5k6JHcxBdjzQgcPO/0iwR6A==}
+    dependencies:
+      tslib: 2.4.0
+    dev: false
+
   /@types/eslint-scope/3.7.3:
     resolution: {integrity: sha512-PB3ldyrcnAicT35TWPs5IcwKD8S333HMaa2VVv4+wdvebJkjWuW/xESoB8IwRcog8HYVYamb1g/R31Qv5Bx03g==}
     dependencies:
@@ -1020,6 +1026,13 @@ packages:
       kind-of: 6.0.3
       shallow-clone: 3.0.1
     dev: true
+
+  /cloudflare-pages-plugin-trpc/0.0.1:
+    resolution: {integrity: sha512-7GN87dbIRuMdY6gU7TMObxsts26VFdjfSuITAX538tqXRubsQvYm2M6HqlUlQtQoAFng1Xji5e0Dd8NoRNPO+g==}
+    dependencies:
+      '@trpc/server': 10.0.0-alpha.22
+      zod: 3.16.0
+    dev: false
 
   /color-convert/1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
@@ -2615,6 +2628,10 @@ packages:
       webpack: 5.72.1_webpack-cli@4.9.2
     dev: true
 
+  /tslib/2.4.0:
+    resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
+    dev: false
+
   /typescript/4.4.4:
     resolution: {integrity: sha512-DqGhF5IKoBl8WNf8C1gu8q0xZSInh9j1kJJMqT3a94w1JzVaBU4EXOSMrz9yDqMT0xt3selp83fuFMQ0uzv6qA==}
     engines: {node: '>=4.2.0'}
@@ -2856,3 +2873,7 @@ packages:
       mustache: 4.2.0
       stack-trace: 0.0.10
     dev: true
+
+  /zod/3.16.0:
+    resolution: {integrity: sha512-szrIkryADbTM+xBt2a1KoS2CJQXec4f9xG78bj5MJeEH/XqmmHpnO+fG3IE115AKBJak+2HrbxLZkc9mhdbDKA==}
+    dev: false

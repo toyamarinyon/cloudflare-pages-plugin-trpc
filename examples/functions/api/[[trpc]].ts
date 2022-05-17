@@ -1,4 +1,4 @@
-import tRPCPlugin from 'cloudflare-pages-plugin';
+import tRPCPlugin from 'cloudflare-pages-plugin-trpc';
 import * as trpc from '@trpc/server';
 import { z } from 'zod';
 
