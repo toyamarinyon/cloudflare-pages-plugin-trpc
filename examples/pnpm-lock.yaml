@@ -5,8 +5,8 @@ specifiers:
   '@tailwindcss/forms': ^0.5.1
   '@trpc/client': ^10.0.0-alpha.22
   '@trpc/react': ^10.0.0-alpha.22
-  '@types/react': ^17.0.20
-  '@types/react-dom': ^17.0.9
+  '@types/react': ^18.0.0
+  '@types/react-dom': ^18.0.0
   '@vitejs/plugin-react': ^1.3.2
   autoprefixer: ^10.4.4
   cloudflare-pages-plugin-trpc: 0.0.1
@@ -34,8 +34,8 @@ dependencies:
 
 devDependencies:
   '@cloudflare/workers-types': 3.10.0
-  '@types/react': 17.0.45
-  '@types/react-dom': 17.0.17
+  '@types/react': 18.0.9
+  '@types/react-dom': 18.0.4
   '@vitejs/plugin-react': 1.3.2
   autoprefixer: 10.4.7_postcss@8.4.13
   postcss: 8.4.13
@@ -629,14 +629,14 @@ packages:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
     dev: true
 
-  /@types/react-dom/17.0.17:
-    resolution: {integrity: sha512-VjnqEmqGnasQKV0CWLevqMTXBYG9GbwuE6x3VetERLh0cq2LTptFE73MrQi2S7GkKXCf2GgwItB/melLnxfnsg==}
+  /@types/react-dom/18.0.4:
+    resolution: {integrity: sha512-FgTtbqPOCI3dzZPZoC2T/sx3L34qxy99ITWn4eoSA95qPyXDMH0ALoAqUp49ITniiJFsXUVBtalh/KffMpg21Q==}
     dependencies:
-      '@types/react': 17.0.45
+      '@types/react': 18.0.9
     dev: true
 
-  /@types/react/17.0.45:
-    resolution: {integrity: sha512-YfhQ22Lah2e3CHPsb93tRwIGNiSwkuz1/blk4e6QrWS0jQzCSNbGLtOEYhPg02W0yGTTmpajp7dCTbBAMN3qsg==}
+  /@types/react/18.0.9:
+    resolution: {integrity: sha512-9bjbg1hJHUm4De19L1cHiW0Jvx3geel6Qczhjd0qY5VKVE2X5+x77YxAepuCwVh4vrgZJdgEJw48zrhRIeF4Nw==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2

@@ -10,8 +10,8 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^3.8.0",
-    "@types/react": "^17.0.20",
-    "@types/react-dom": "^17.0.9",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^1.3.2",
     "autoprefixer": "^10.4.4",
     "postcss": "^8.4.12",
@@ -27,8 +27,8 @@
   "dependencies": {
     "@tailwindcss/forms": "^0.5.1",
     "@trpc/client": "^10.0.0-alpha.22",
-    "cloudflare-pages-plugin-trpc": "0.0.1",
     "@trpc/react": "^10.0.0-alpha.22",
+    "cloudflare-pages-plugin-trpc": "0.0.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-query": "^3.27.0"
