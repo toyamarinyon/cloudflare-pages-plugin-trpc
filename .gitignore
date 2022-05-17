@@ -1,0 +1,5 @@
+dist/*
+examples/dist
+node_modules
+memo/*
+*.log
