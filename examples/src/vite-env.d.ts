@@ -1,8 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_: string;
-  // more env variables...
+  readonly CF_PAGES_URL: string?;
 }
 
 interface ImportMeta {

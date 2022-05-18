@@ -1,16 +1,17 @@
-import { useState } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { Hello } from './Hello';
-import { trpc } from './trpc';
+import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Hello } from "./Hello";
+import { trpc } from "./trpc";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url: 'http://localhost:8788/api/trpc',
-    }),
+      url: import.meta.env.CF_PAGES_URL
+        ? `${import.meta.env.CF_PAGES_URL}/api/trpc`
+        : "http://localhost:8788/api/trpc",
+    })
   );
-  console.info(import.meta.env.CF_PAGES_URL)
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
