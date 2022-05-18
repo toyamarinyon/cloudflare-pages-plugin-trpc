@@ -7,9 +7,7 @@ function App() {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url: import.meta.env.CF_PAGES_URL
-        ? `${import.meta.env.CF_PAGES_URL}/api/trpc`
-        : "http://localhost:8788/api/trpc",
+      url: `${window.location.href}api/trpc`
     })
   );
   return (
