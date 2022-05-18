@@ -10,7 +10,7 @@ function App() {
       url: 'http://localhost:8788/api/trpc',
     }),
   );
-  console.info(import.meta.env)
+  console.info(import.meta.env.CF_PAGES_URL)
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
