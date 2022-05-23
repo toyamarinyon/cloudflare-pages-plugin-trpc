@@ -4,9 +4,9 @@ This plugin allows developers to create tRPC server on Cloudflare Page Function 
 
 You can see demo site on [https://cloudflare-pages-plugin-trpc.pages.dev](https://cloudflare-pages-plugin-trpc.pages.dev/).
 
-# READ THIS FIRST
-
-This plugin is on `tRPC@10.x`. It's still in alpha, expect bugs and there're lots of breaking changes.
+> **Warning**
+> 
+> This plugin is on `tRPC@10.x`. It's still in alpha, expect bugs and there're lots of breaking changes.
 
 # How to use
 
