@@ -1,4 +1,4 @@
-import tRPCPlugin from "../../../dist/index";
+import tRPCPlugin from "cloudflare-pages-plugin-trpc";
 import * as trpc from "@trpc/server";
 import { Context, createContext } from "../../context";
 import { z } from "zod";
