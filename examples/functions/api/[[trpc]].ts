@@ -68,7 +68,6 @@ export interface Env {
 export const onRequest: PagesFunction<Env> = async (context) => {
   return tRPCPlugin({
     router: appRouter,
-    req: context.request,
     createContext,
     endpoint: "/api/trpc",
   })(context);
