@@ -26,11 +26,13 @@
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.1",
-    "@trpc/client": "^10.0.0-alpha.22",
-    "@trpc/react": "^10.0.0-alpha.22",
-    "cloudflare-pages-plugin-trpc": "0.0.1",
+    "@trpc/client": "10.0.0-alpha.22",
+    "@trpc/react": "10.0.0-alpha.22",
+    "@trpc/server": "10.0.0-alpha.22",
+    "cloudflare-pages-plugin-trpc": "../",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-query": "^3.27.0"
+    "react-query": "^3.27.0",
+    "webcrypt-session": "^0.5.0"
   }
 }
