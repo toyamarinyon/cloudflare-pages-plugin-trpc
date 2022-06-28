@@ -1,5 +1,5 @@
-dist/*
+dist
 examples/dist
 node_modules
-memo/*
+memo
 *.log
