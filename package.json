@@ -23,7 +23,7 @@
     "wrangler": "^2.0.3"
   },
   "dependencies": {
-    "@trpc/server": "10.0.0-alpha.22",
+    "@trpc/server": "10.5.0",
     "zod": "^3.17.3"
   }
 }
