@@ -1,28 +1,27 @@
 import { expect, test, vi } from "vitest";
-import * as trpc from "@trpc/server";
+import { initTRPC, inferAsyncReturnType } from "@trpc/server";
 import { z } from "zod";
 import { onRequest } from "./[[path]]";
 import { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
-import { inferAsyncReturnType } from "@trpc/server";
-import { WebCryptSession } from "webcrypt-session";
 
 const createContext = function (opts: FetchCreateContextFnOptions) {
   return {};
 };
 export type Context = inferAsyncReturnType<typeof createContext>;
 
+const t = initTRPC.context<Context>().create();
+
+export const router = t.router;
+export const middleware = t.middleware;
+export const publicProcedure = t.procedure;
+const appRouter = router({
+  hello: publicProcedure.input(z.string().nullish()).query(({ input }) => {
+    return `hello ${input ?? "world"}`;
+  }),
+});
+
 const sessionScheme = z.object({
   userId: z.number(),
-});
-const createRouter = function () {
-  return trpc.router<Context & WebCryptSession<typeof sessionScheme>>();
-};
-
-const appRouter = createRouter().query("hello", {
-  input: z.string().nullish(),
-  resolve: ({ input, ctx }) => {
-    return `hello ${input ?? "world"}`;
-  },
 });
 
 const requestHandlerMock = {
@@ -69,7 +68,7 @@ test("works properly with session", async () => {
       },
     },
   });
-  expect(mock).toBeCalledTimes(1)
-  expect(response.status).toBe(200); 
+  expect(mock).toBeCalledTimes(1);
+  expect(response.status).toBe(200);
   expect(response.headers.get("Set-Cookie")).toBe("session");
 });
