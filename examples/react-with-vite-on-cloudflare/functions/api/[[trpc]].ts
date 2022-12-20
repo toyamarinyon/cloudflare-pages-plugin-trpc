@@ -4,20 +4,27 @@ import tRPCPlugin from "cloudflare-pages-plugin-trpc";
 
 const t = initTRPC.create();
 
+const dummyDatabase = {
+  posts: [
+    { id: 1, title: "hello" },
+    { id: 2, title: "world" },
+  ],
+};
+
 const posts = t.router({
   create: t.procedure
     .input(z.object({ title: z.string() }))
     .mutation(({ input }) => {
-      return {
-        id: 1,
+      const latestId = dummyDatabase.posts[dummyDatabase.posts.length - 1].id;
+      const newPost = {
+        id: latestId + 1,
         title: input.title,
       };
+      dummyDatabase.posts.push(newPost);
+      return newPost;
     }),
   list: t.procedure.query(() => ({
-    posts: [
-      { id: 1, title: "hello" },
-      { id: 2, title: "world" },
-    ],
+    posts: dummyDatabase.posts,
   })),
 });
 
