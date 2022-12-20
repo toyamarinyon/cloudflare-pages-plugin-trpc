@@ -5,7 +5,7 @@ export function Hello() {
   const postQuery = trpc.posts.list.useQuery();
   const mutation = trpc.posts.create.useMutation();
   const [title, setTitle] = useState("");
-  if (postQuery.isFetching) {
+  if (postQuery.isInitialLoading) {
     return <div>Loading...</div>;
   }
   return (
@@ -16,7 +16,9 @@ export function Hello() {
         </h1>
       </header>
       <h2 className="text-lg">query sample:</h2>
-      {postQuery.data == null ? (
+      {postQuery.isFetching ? (
+        <div>loading...</div>
+      ) : postQuery.data == null ? (
         <div>no posts</div>
       ) : (
         <ul>
