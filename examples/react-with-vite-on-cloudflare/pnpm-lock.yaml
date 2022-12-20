@@ -10,7 +10,7 @@ specifiers:
   '@types/react-dom': ^18.0.9
   '@vitejs/plugin-react': ^3.0.0
   autoprefixer: ^10.4.13
-  cloudflare-pages-plugin-trpc: ../../dist
+  cloudflare-pages-plugin-trpc: 0.1.0
   postcss: ^8.4.20
   react: ^18.2.0
   react-dom: ^18.2.0
@@ -34,7 +34,7 @@ devDependencies:
   '@types/react-dom': 18.0.9
   '@vitejs/plugin-react': 3.0.0_vite@4.0.2
   autoprefixer: 10.4.13_postcss@8.4.20
-  cloudflare-pages-plugin-trpc: link:../../dist
+  cloudflare-pages-plugin-trpc: 0.1.0
   postcss: 8.4.20
   tailwindcss: 3.2.4
   typescript: 4.9.4
@@ -577,7 +577,6 @@ packages:
 
   /@trpc/server/10.5.0:
     resolution: {integrity: sha512-AJ4ckDpnN8xuqWBox68KDTFpG12ZxKkW7fi9XJ+TLtyyNyqOMVUvKH9070CdxhqBZjebTASryE+/6lntkDFQxA==}
-    dev: false
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
@@ -725,6 +724,13 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
+
+  /cloudflare-pages-plugin-trpc/0.1.0:
+    resolution: {integrity: sha512-u7ttaxvRsBiqtjWJjqmHG1eBYlyIN1zcn8Fykqhno/BdY/6eQOfFLTzIxGxoAicFcDI1OlO5UYS/3t/ZfZ1+Ew==}
+    dependencies:
+      '@trpc/server': 10.5.0
+      zod: 3.20.2
     dev: true
 
   /color-convert/1.9.3:
@@ -1325,4 +1331,3 @@ packages:
 
   /zod/3.20.2:
     resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
-    dev: false
