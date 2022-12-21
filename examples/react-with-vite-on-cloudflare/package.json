@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^4.20.4",
-    "@trpc/client": "^10.5.0",
-    "@trpc/react-query": "^10.5.0",
-    "@trpc/server": "^10.5.0",
+    "@trpc/client": "10.5.0",
+    "@trpc/react-query": "10.5.0",
+    "@trpc/server": "10.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "zod": "^3.20.2"
