@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { trpc } from './trpc';
+import { useState } from "react";
+import { trpc } from "./trpcUtil";
 
 export function Hello() {
-  const hello = trpc.useQuery(['hello']);
-  const mutation = trpc.useMutation(['post.create']);
-  const [title, setTitle] = useState('');
-  if (!hello.data) return <div>Loading...</div>;
+  const postQuery = trpc.posts.list.useQuery();
+  const mutation = trpc.posts.create.useMutation();
+  const [title, setTitle] = useState("");
+  if (postQuery.isInitialLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="mx-auto max-w-6xl py-4">
       <header className="mb-4">
@@ -14,14 +16,23 @@ export function Hello() {
         </h1>
       </header>
       <h2 className="text-lg">query sample:</h2>
-      <p>{hello.data}</p>
+      {postQuery.isFetching ? (
+        <div>loading...</div>
+      ) : postQuery.data == null ? (
+        <div>no posts</div>
+      ) : (
+        <ul>
+          {postQuery.data.posts.map((post) => (
+            <li key={post.id}>{post.title}</li>
+          ))}
+        </ul>
+      )}
       <hr />
       <h2 className="text-lg">mutation sample:</h2>
       <form
         onSubmit={async (e) => {
           e.preventDefault();
           const result = await mutation.mutateAsync({ title });
-          result.title;
           alert(`post created: ${result.title}`);
         }}
       >

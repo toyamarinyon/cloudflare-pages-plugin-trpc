@@ -1,52 +1,36 @@
-import tRPCPlugin from "cloudflare-pages-plugin-trpc";
-import * as trpc from "@trpc/server";
-import { Context, createContext } from "../../context";
+import { initTRPC } from "@trpc/server";
 import { z } from "zod";
+import tRPCPlugin from "cloudflare-pages-plugin-trpc";
 
-let id = 0;
+const t = initTRPC.create();
 
-const db = {
+const dummyDatabase = {
   posts: [
-    {
-      id: ++id,
-      title: "hello",
-    },
+    { id: 1, title: "hello" },
+    { id: 2, title: "world" },
   ],
 };
 
-function createRouter() {
-  return trpc.router<Context>();
-}
-
-const posts = createRouter()
-  .mutation("create", {
-    input: z.object({
-      title: z.string(),
-    }),
-    resolve: async ({ input, ctx }) => {
-      const post = {
-        id: ++id,
-        ...input,
+const posts = t.router({
+  create: t.procedure
+    .input(z.object({ title: z.string() }))
+    .mutation(({ input }) => {
+      const latestId = dummyDatabase.posts[dummyDatabase.posts.length - 1].id;
+      const newPost = {
+        id: latestId + 1,
+        title: input.title,
       };
-      await ctx.session.save({
-        userId: 123,
-      });
-      db.posts.push(post);
-      return post;
-    },
-  })
-  .query("list", {
-    resolve: () => db.posts,
-  });
+      dummyDatabase.posts.push(newPost);
+      return newPost;
+    }),
+  list: t.procedure.query(() => ({
+    posts: dummyDatabase.posts,
+  })),
+});
 
-export const appRouter = createRouter()
-  .query("hello", {
-    input: z.string().nullish(),
-    resolve: ({ input }) => {
-      return `hello ${input ?? "world"}`;
-    },
-  })
-  .merge("post.", posts);
+const appRouter = t.router({
+  posts,
+});
 
 export type AppRouter = typeof appRouter;
 
@@ -68,7 +52,6 @@ export interface Env {
 export const onRequest: PagesFunction<Env> = async (context) => {
   return tRPCPlugin({
     router: appRouter,
-    createContext,
     endpoint: "/api/trpc",
   })(context);
 };

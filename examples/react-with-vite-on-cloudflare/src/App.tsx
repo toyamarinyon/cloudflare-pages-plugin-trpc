@@ -1,13 +1,18 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { Hello } from "./Hello";
-import { trpc } from "./trpc";
+import { trpc } from "./trpcUtil";
 
-function App() {
+export function App() {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
-      url: `${window.location.href}api/trpc`
+      links: [
+        httpBatchLink({
+          url: `${window.location.href}api/trpc`,
+        }),
+      ],
     })
   );
   return (

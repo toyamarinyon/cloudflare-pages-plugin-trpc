@@ -4,10 +4,6 @@ This plugin allows developers to create tRPC server on Cloudflare Page Function 
 
 You can see demo site on [https://cloudflare-pages-plugin-trpc.pages.dev](https://cloudflare-pages-plugin-trpc.pages.dev/).
 
-> **Warning**
-> 
-> This plugin is on `tRPC@10.x`. It's still in alpha, expect bugs and there're lots of breaking changes.
-
 # How to use
 
 If you have any tRPC router, just set it into this plugin!
@@ -16,14 +12,14 @@ For example, you have router as like as below:
 
 ```ts
 // router.ts
-import * as trpc from "@trpc/server";
+import { initTRPC } from "@trpc/server";
 
-export const router = trpc.router().query("hello", {
-  input: z.string().nullish(),
-  resolve: ({ input }) => {
-    return `hello ${input ?? "world"}`;
-  },
+const t = initTRPC.create();
+
+const appRouter = t.router({
+  hello: t.procedure.query(() => "world"),
 });
+
 export type AppRouter = typeof appRouter;
 ```
 
@@ -31,14 +27,13 @@ You can deploy it to Cloudflare Pages Function right now.
 
 ```ts
 import { router } from "./router.ts";
-import tRPCPlugin from 'cloudflare-pages-plugin';
+import tRPCPlugin from "cloudflare-pages-plugin";
 
 // That's it!
 export const onRequest: PagesFunction = tRPCPlugin({ router });
 ```
 
 More practical code deployed to the [demo site](https://cloudflare-pages-plugin-trpc.pages.dev) can be found in the [/examples](https://github.com/toyamarinyon/cloudflare-pages-plugin-trpc/tree/main/examples) folder.
-
 
 ## What is tRPC ?
 
@@ -58,13 +53,13 @@ So, I'll continue to actively follow and maintain tRPC updates.
 
 - Write documents
 
-    - deploy guide
+  - deploy guide
 
 - Integrate Cloudflare resources
 
-    - R2
-    - D1
-    - And more...
+  - R2
+  - D1
+  - And more...
 
 ## Middle
 
