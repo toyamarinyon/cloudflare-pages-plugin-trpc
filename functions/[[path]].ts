@@ -1,4 +1,7 @@
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import {
+  FetchCreateContextFnOptions,
+  fetchRequestHandler,
+} from "@trpc/server/adapters/fetch";
 import type { PluginArgs } from "..";
 
 interface ResponseHeaderFn {
@@ -16,6 +19,22 @@ function hasResponseHeader(
   );
 }
 
+function withCloudflareEnv<
+  Env = unknown,
+  Params extends string = any,
+  Data extends Record<string, unknown> = Record<string, unknown>
+>(
+  eventContext: EventContext<Env, Params, Data>,
+  createContext?: (opts: FetchCreateContextFnOptions) => Record<string, unknown>
+) {
+  return (opts: FetchCreateContextFnOptions) => {
+    return {
+      ...createContext?.(opts),
+      env: eventContext.env,
+    };
+  };
+}
+
 type tRPCPagesPluginFunction<
   Env = unknown,
   Params extends string = any,
@@ -23,13 +42,15 @@ type tRPCPagesPluginFunction<
 > = PagesPluginFunction<Env, Params, Data, PluginArgs>;
 
 export const onRequest: tRPCPagesPluginFunction = async ({
-  request,
   pluginArgs,
+  ...event
 }) => {
+  const { createContext, ...options } = pluginArgs;
   return fetchRequestHandler({
-    ...pluginArgs,
+    ...options,
     endpoint: pluginArgs.endpoint,
-    req: request,
+    createContext: withCloudflareEnv(event, createContext),
+    req: event.request,
     responseMeta: (ops) => {
       const meta = pluginArgs.responseMeta?.(ops) ?? {};
       const headers = meta?.headers ?? {};

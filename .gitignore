@@ -3,3 +3,5 @@ examples/dist
 node_modules
 memo
 *.log
+*.sqlite3
+.wrangler
