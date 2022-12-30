@@ -17,7 +17,7 @@ export const AddTask = (): JSX.Element => {
       await mutateAsync(data);
       await navigate({ to: indexRoute.id, search: "", params: {} });
     },
-    [mutateAsync]
+    [mutateAsync, navigate]
   );
 
   return (

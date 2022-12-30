@@ -1,22 +1,25 @@
 import { ChangeEventHandler, useCallback } from "react";
+import { ZodIssue } from "zod";
 import { FormField, FormFieldProps } from "./FormField";
 
 type Props = Omit<FormFieldProps, "children"> & {
   multiline?: boolean;
   value: string;
+  placeholder?: string;
   onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  error?: ZodIssue
 };
 
 export const InputTextField = ({ multiline, ...props }: Props): JSX.Element => {
-  const { name, label } = props;
+  const { name, label, onChange, error } = props;
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      props.onChange?.(e);
+      onChange?.(e);
     },
-    []
+    [onChange]
   );
   return (
-    <FormField name={name} label={label}>
+    <FormField name={name} label={label} error={error}>
       {/* <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
           http://
         </span> */}

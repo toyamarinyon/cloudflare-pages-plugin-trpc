@@ -3,7 +3,7 @@ import { z, AnyZodObject } from "zod";
 
 export const useForm = <Z extends AnyZodObject>(scheme: Z) => {
   type Scheme = z.infer<typeof scheme>;
-  const [values, setValues] = useState<Scheme>();
+  const [values, setValues] = useState<Scheme>({});
   const [errors, setErrors] = useState<z.ZodError>();
   const register = useCallback(
     (key: keyof Scheme) => {
@@ -13,9 +13,12 @@ export const useForm = <Z extends AnyZodObject>(scheme: Z) => {
         setValues((prev) => ({ ...prev, [key]: e.target.value }));
       };
       const value = values?.[key] ?? "";
-      return { onChange, value, name: key };
+      const error = errors?.issues.find((issue) =>
+        issue.path.find((path) => path === key)
+      );
+      return { onChange, value, name: key, error };
     },
-    [values]
+    [values, errors]
   );
   const handleSubmit = useCallback(
     (submitHandler: (value: Scheme) => Promise<void>) =>
