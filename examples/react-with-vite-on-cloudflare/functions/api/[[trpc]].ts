@@ -1,57 +1,44 @@
 import { initTRPC } from "@trpc/server";
-import { z } from "zod";
-import tRPCPlugin from "cloudflare-pages-plugin-trpc";
+import tRPCPlugin, { CloudflareEnv } from "cloudflare-pages-plugin-trpc";
+import { createTaskScheme, Task } from "../../src/model/task";
 
-const t = initTRPC.create();
+export interface Env {
+  DB: D1Database;
+}
 
-const dummyDatabase = {
-  posts: [
-    { id: 1, title: "hello" },
-    { id: 2, title: "world" },
-  ],
-};
+const t = initTRPC.context<CloudflareEnv<Env>>().create();
 
-const posts = t.router({
+const tasksRouter = t.router({
   create: t.procedure
-    .input(z.object({ title: z.string() }))
-    .mutation(({ input }) => {
-      const latestId = dummyDatabase.posts[dummyDatabase.posts.length - 1].id;
-      const newPost = {
-        id: latestId + 1,
-        title: input.title,
-      };
-      dummyDatabase.posts.push(newPost);
-      return newPost;
+    .input(createTaskScheme)
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.env.DB.prepare(
+        "INSERT INTO tasks (title, description) VALUES (?, ?)"
+      )
+        .bind(input.title, input.description)
+        .run<Task>();
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
     }),
-  list: t.procedure.query(() => ({
-    posts: dummyDatabase.posts,
-  })),
+  list: t.procedure.query(async ({ ctx }) => {
+    const { results: tasks } = await ctx.env.DB.prepare(
+      "SELECT * FROM tasks"
+    ).all<Task>();
+    return {
+      tasks,
+    };
+  }),
 });
 
 const appRouter = t.router({
-  posts,
+  tasks: tasksRouter,
 });
 
 export type AppRouter = typeof appRouter;
 
-export interface Env {
-  // Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-  // MY_KV_NAMESPACE: KVNamespace;
-  //
-  // Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
-  // MY_DURABLE_OBJECT: DurableObjectNamespace;
-  //
-  // Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
-  // MY_BUCKET: R2Bucket;
-}
-// declare type PagesFunction<
-//   Env = unknown,
-//   Params extends string = any,
-//   Data extends Record<string, unknown> = Record<string, unknown>
-// > = (context: EventContext<Env, Params, Data>) => Response | Promise<Response>;
-export const onRequest: PagesFunction<Env> = async (context) => {
-  return tRPCPlugin({
-    router: appRouter,
-    endpoint: "/api/trpc",
-  })(context);
-};
+export const onRequest: PagesFunction<Env> = tRPCPlugin({
+  router: appRouter,
+  endpoint: "/api/trpc",
+});
