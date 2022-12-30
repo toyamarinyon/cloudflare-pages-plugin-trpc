@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS posts;
 DROP TABLE IF EXISTS tasks;
 CREATE TABLE tasks (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT,
-  description TEXT
+  description TEXT,
+  completion_datetime DATETIME
 );

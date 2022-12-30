@@ -1,6 +1,6 @@
 import { initTRPC } from "@trpc/server";
 import tRPCPlugin, { CloudflareEnv } from "cloudflare-pages-plugin-trpc";
-import { createTaskScheme, Task } from "../../src/model/task";
+import { createTaskScheme, Task, taskScheme } from "../../src/model/task";
 
 export interface Env {
   DB: D1Database;
@@ -22,9 +22,22 @@ const tasksRouter = t.router({
         throw new Error(result.error);
       }
     }),
+  complete: t.procedure
+    .input(taskScheme.pick({ id: true }))
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.env.DB.prepare(
+        "UPDATE tasks SET completion_datetime = ? WHERE id = ?"
+      )
+        .bind(new Date().valueOf(), input.id)
+        .run<Task>();
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+    }),
   list: t.procedure.query(async ({ ctx }) => {
     const { results: tasks } = await ctx.env.DB.prepare(
-      "SELECT * FROM tasks"
+      "SELECT * FROM tasks where completion_datetime IS NULL"
     ).all<Task>();
     return {
       tasks,

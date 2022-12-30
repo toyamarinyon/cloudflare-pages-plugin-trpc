@@ -14,10 +14,10 @@ export const Home = (): JSX.Element => {
     <Page title="Tasks">
       {postQuery.isFetching ? (
         <div>loading...</div>
-      ) : postQuery.data?.tasks == null ? (
-        <div>no tasks</div>
+      ) : postQuery.data?.tasks == null || postQuery.data.tasks.length === 0 ? (
+        <></>
       ) : (
-        <ul className="mb-2 divide-y divide-slate-200 border-b border-slate-200 mb-4">
+        <ul className="divide-y divide-slate-200 border-b border-slate-200 mb-4">
           {postQuery.data.tasks.map((task) => (
             <li key={task.id} className="py-2">
               <Task {...task} />
