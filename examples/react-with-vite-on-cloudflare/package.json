@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npx wrangler pages dev --local --persist --d1=DB --compatibility-date=2022-12-26 -- npm run dev:vite",
     "dev:vite": "vite dev",
-    "build": "tsc && vite build"
+    "build": "vite build"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.6",
