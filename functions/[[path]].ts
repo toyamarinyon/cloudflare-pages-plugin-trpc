@@ -25,11 +25,13 @@ function withCloudflareEnv<
   Data extends Record<string, unknown> = Record<string, unknown>
 >(
   eventContext: EventContext<Env, Params, Data>,
-  createContext?: (opts: FetchCreateContextFnOptions) => Record<string, unknown>
+  createContext?: (
+    opts: FetchCreateContextFnOptions
+  ) => Promise<Record<string, unknown>>
 ) {
-  return (opts: FetchCreateContextFnOptions) => {
+  return async (opts: FetchCreateContextFnOptions) => {
     return {
-      ...createContext?.(opts),
+      ...(await createContext?.(opts)),
       env: eventContext.env,
     };
   };

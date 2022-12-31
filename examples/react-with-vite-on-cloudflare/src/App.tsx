@@ -10,7 +10,7 @@ export function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: `${window.location.href}api/trpc`,
+          url: `${window.location.protocol}//${window.location.host}/api/trpc`,
         }),
       ],
     })

@@ -2,14 +2,15 @@ import { HeartIcon } from "@heroicons/react/solid";
 import {
   createReactRouter,
   createRouteConfig,
-  Link,
   Outlet,
   RouterProvider,
 } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { AddTask } from "./pages/AddTask";
+import { Auth } from "./pages/Auth";
 import { Home } from "./pages/Home";
 
-const rootRoute = createRouteConfig({
+export const rootRoute = createRouteConfig({
   component: () => (
     <div className="">
       <section className="text-center text-xs bg-slate-200 py-1 text-slate-500">
@@ -41,7 +42,30 @@ export const addRoute = rootRoute.createRoute({
   path: "/add",
   component: AddTask,
 });
-const routeConfig = rootRoute.addChildren([indexRoute, addRoute]);
+export const loginRoute = rootRoute.createRoute({
+  path: "/login",
+  component: () => (
+    <div>
+      this is login
+      <a
+        href="https://github.com/login/oauth/authorize?client_id=9df57f381a50ef66d3e7"
+        target="_blank"
+      >
+        https://github.com/login/oauth/authorize?client_id=9df57f381a50ef66d3e7
+      </a>
+    </div>
+  ),
+});
+export const authRoute = rootRoute.createRoute({
+  path: "/auth",
+  component: Auth,
+});
+const routeConfig = rootRoute.addChildren([
+  indexRoute,
+  addRoute,
+  loginRoute,
+  authRoute,
+]);
 const router = createReactRouter({ routeConfig });
 
 export function Router() {
