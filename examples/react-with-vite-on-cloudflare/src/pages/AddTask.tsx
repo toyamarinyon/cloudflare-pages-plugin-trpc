@@ -5,7 +5,7 @@ import { Page } from "../components/Page";
 import { useForm } from "../hooks/useForm";
 import { trpc } from "../trpcUtil";
 import { useRouter } from "@tanstack/react-router";
-import { indexRoute } from "../Router";
+import { authenticatedRoute } from "../Router";
 import { CreateTaskPayload, createTaskScheme } from "../model/task";
 
 export const AddTask = (): JSX.Element => {
@@ -15,7 +15,7 @@ export const AddTask = (): JSX.Element => {
   const submit = useCallback(
     async (data: CreateTaskPayload) => {
       await mutateAsync(data);
-      await navigate({ to: indexRoute.id, search: "", params: {} });
+      await navigate({ to: authenticatedRoute.id });
     },
     [mutateAsync, navigate]
   );

@@ -1,6 +1,6 @@
 import { trpc } from "../trpcUtil";
 import { PlusIcon } from "@heroicons/react/solid";
-import { addRoute, rootRoute } from "../Router";
+import { addRoute } from "../Router";
 import { Link } from "@tanstack/react-router";
 import { Page } from "../components/Page";
 import { Task } from "../components/Task";
@@ -35,4 +35,3 @@ export const Home = (): JSX.Element => {
     </Page>
   );
 };
-

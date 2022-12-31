@@ -91,17 +91,27 @@ const authenticationRouter = t.router({
         const githubUser = await getUser(accessToken);
 
         const dbUser = await ctx.env.DB.prepare(
-          "SELECT id FROM users WHERE github_id = ?"
+          "SELECT id FROM users WHERE github_user_id = ?"
         )
           .bind(githubUser.id)
           .first<{ id: number }>();
+
+        /**
+         * @todo use const
+         */
+        let dbUserId = 0;
         if (dbUser == null) {
           await ctx.env.DB.prepare(
-            "INSERT INTO users (github_id, github_oauth_token) VALUES (?, ?)"
+            "INSERT INTO users (github_user_id, github_oauth_token) VALUES (?, ?)"
           )
             .bind(githubUser.id, accessToken)
             .run();
+          const { id } = await ctx.env.DB.prepare(
+            "SELECT last_insert_rowid() as id"
+          ).first<{ id: number }>();
+          dbUserId = id;
         } else {
+          dbUserId = dbUser.id;
           await ctx.env.DB.prepare(
             "UPDATE users SET github_oauth_token = ? WHERE id = ?"
           )
@@ -110,9 +120,9 @@ const authenticationRouter = t.router({
         }
         const sessionId = crypto.randomUUID();
         await ctx.env.DB.prepare(
-          "INSERT INTO sessions (id, user_id) VALUES (?)"
+          "INSERT INTO sessions (id, user_id) VALUES (?, ?)"
         )
-          .bind(sessionId, dbUser.id)
+          .bind(sessionId, dbUserId)
           .run();
         await ctx.session.save({
           id: sessionId,
