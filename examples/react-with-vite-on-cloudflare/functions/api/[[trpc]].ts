@@ -59,27 +59,63 @@ const tasksRouter = t.router({
 });
 
 const authenticationRouter = t.router({
-  auth: t.procedure.query(async ({ ctx }) => {
-    if (ctx.session.userId == null) {
-      return;
+  currentUser: t.procedure.query(async ({ ctx }) => {
+    if (ctx.session.id == null) {
+      return { currentUser: null };
     }
+    const session = await ctx.env.DB.prepare(
+      "SELECT id, user_id FROM sessions WHERE id = ?"
+    )
+      .bind(ctx.session.id)
+      .first<{ id: number; user_id: number }>();
+    if (session == null) {
+      return { currentUser: null };
+    }
+
+    const user = await ctx.env.DB.prepare("SELECT * FROM users WHERE id = ?")
+      .bind(session.user_id)
+      .first<{ github_oauth_token: string }>();
+
     /**
-     * todo: check if user exists
+     * @todo if expired, refresh token
      */
-    return true;
+    const githubUser = await getUser(user.github_oauth_token);
+
+    return { currentUser: githubUser };
   }),
   login: t.procedure
     .input(z.object({ oauthToken: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
         const accessToken = await getAccessToken(input.oauthToken);
-        const user = await getUser(accessToken);
+        const githubUser = await getUser(accessToken);
 
-        /**
-         * todo: check if user exists
-         **/
+        const dbUser = await ctx.env.DB.prepare(
+          "SELECT id FROM users WHERE github_id = ?"
+        )
+          .bind(githubUser.id)
+          .first<{ id: number }>();
+        if (dbUser == null) {
+          await ctx.env.DB.prepare(
+            "INSERT INTO users (github_id, github_oauth_token) VALUES (?, ?)"
+          )
+            .bind(githubUser.id, accessToken)
+            .run();
+        } else {
+          await ctx.env.DB.prepare(
+            "UPDATE users SET github_oauth_token = ? WHERE id = ?"
+          )
+            .bind(accessToken, dbUser.id)
+            .run();
+        }
+        const sessionId = crypto.randomUUID();
+        await ctx.env.DB.prepare(
+          "INSERT INTO sessions (id, user_id) VALUES (?)"
+        )
+          .bind(sessionId, dbUser.id)
+          .run();
         await ctx.session.save({
-          userId: 1,
+          id: sessionId,
         });
       } catch (e) {
         console.log(e);
