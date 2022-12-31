@@ -19,29 +19,11 @@ function hasResponseHeader(
   );
 }
 
-function withCloudflareEnv<
-  Env = unknown,
-  Params extends string = any,
-  Data extends Record<string, unknown> = Record<string, unknown>
->(
-  eventContext: EventContext<Env, Params, Data>,
-  createContext?: (
-    opts: FetchCreateContextFnOptions
-  ) => Promise<Record<string, unknown>>
-) {
-  return async (opts: FetchCreateContextFnOptions) => {
-    return {
-      ...(await createContext?.(opts)),
-      env: eventContext.env,
-    };
-  };
-}
-
 type tRPCPagesPluginFunction<
   Env = unknown,
   Params extends string = any,
   Data extends Record<string, unknown> = Record<string, unknown>
-> = PagesPluginFunction<Env, Params, Data, PluginArgs>;
+> = PagesPluginFunction<Env, Params, Data, PluginArgs<Env>>;
 
 export const onRequest: tRPCPagesPluginFunction = async ({
   pluginArgs,
@@ -51,7 +33,8 @@ export const onRequest: tRPCPagesPluginFunction = async ({
   return fetchRequestHandler({
     ...options,
     endpoint: pluginArgs.endpoint,
-    createContext: withCloudflareEnv(event, createContext),
+    createContext: async ({ req }) =>
+      await createContext({ req, env: event.env }),
     req: event.request,
     responseMeta: (ops) => {
       const meta = pluginArgs.responseMeta?.(ops) ?? {};

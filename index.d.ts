@@ -1,14 +1,22 @@
 import type { FetchHandlerRequestOptions } from "@trpc/server/adapters/fetch";
-import type { AnyRouter, inferAsyncReturnType } from "@trpc/server";
+import type { AnyRouter, inferRouterContext } from "@trpc/server";
 
-export type CloudflareEnv<Env> = { env: Env };
-export type inferAsyncReturnTypeWithCloudflareEnv<
-  Env,
-  TFunction extends (...args: any) => any
-> = inferAsyncReturnType<TFunction> & CloudflareEnv<Env>;
+export type FetchCreateContextWithCloudflareEnvFnOptions<Env> = {
+  req: Request;
+  env: Env;
+};
 
-export type PluginArgs = Omit<FetchHandlerRequestOptions<AnyRouter>, "req">;
+type FetchCreateContextWithCloudflareEnvFn<TRouter extends AnyRouter, Env> = (
+  opts: FetchCreateContextWithCloudflareEnvFnOptions<Env>
+) => inferRouterContext<TRouter> | Promise<inferRouterContext<TRouter>>;
 
-export default function tRPCPagesPluginFunction(
-  args: PluginArgs
+export type PluginArgs<Env> = Omit<
+  FetchHandlerRequestOptions<AnyRouter>,
+  "req" | "createContext"
+> & {
+  createContext: FetchCreateContextWithCloudflareEnvFn<AnyRouter, Env>;
+};
+
+export default function tRPCPagesPluginFunction<Env>(
+  args: PluginArgs<Env>
 ): PagesFunction;
