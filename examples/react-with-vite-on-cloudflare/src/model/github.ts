@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-const CLIENT_ID = "";
-const CLIENT_SECRET = "";
-
 /**
  * @see https://docs.github.com/en/rest/users/users?apiVersion=2022-11-28#get-the-authenticated-user
  */
@@ -29,7 +26,15 @@ export const accessTokenScheme = z.object({
   token_type: z.string(),
   scope: z.string(),
 });
-export const getAccessToken = async (code: string) => {
+export const getAccessToken = async ({
+  code,
+  clientId,
+  clientSecret,
+}: {
+  code: string;
+  clientId: string;
+  clientSecret: string;
+}) => {
   const response = await fetch("https://github.com/login/oauth/access_token", {
     method: "POST",
     headers: {
@@ -38,8 +43,8 @@ export const getAccessToken = async (code: string) => {
       accept: "application/json",
     },
     body: JSON.stringify({
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
+      client_id: clientId,
+      client_secret: clientSecret,
       code,
     }),
   });

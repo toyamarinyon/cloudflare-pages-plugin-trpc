@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npx wrangler pages dev --local --persist --compatibility-date=2022-12-26 -- npm run dev:vite",
+    "dev": "npx wrangler pages dev --local --persist --d1=DB --compatibility-date=2022-12-26 -- npm run dev:vite",
     "dev:vite": "vite dev",
     "build": "tsc && vite build"
   },
@@ -19,6 +19,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-ux-form": "^1.1.5",
+    "webcrypt-session": "^0.5.1",
     "zod": "^3.20.2"
   },
   "devDependencies": {
@@ -30,7 +31,7 @@
     "@typescript-eslint/parser": "^5.47.1",
     "@vitejs/plugin-react": "^3.0.0",
     "autoprefixer": "^10.4.13",
-    "cloudflare-pages-plugin-trpc": "0.2.0",
+    "cloudflare-pages-plugin-trpc": "0.2.1",
     "eslint": "^8.30.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.20",

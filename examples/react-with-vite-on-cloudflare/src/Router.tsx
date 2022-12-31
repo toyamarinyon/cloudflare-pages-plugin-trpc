@@ -11,6 +11,7 @@ import { z } from "zod";
 import { AddTask } from "./pages/AddTask";
 import { Auth } from "./pages/Auth";
 import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
 import { trpcClient } from "./trpcUtil";
 
 const AppGuard = () => {
@@ -73,17 +74,7 @@ export const addRoute = authenticatedRoute.createRoute({
 });
 export const loginRoute = r.createRoute({
   path: "/login",
-  component: () => (
-    <div>
-      this is login
-      <a
-        href="https://github.com/login/oauth/authorize?client_id=9df57f381a50ef66d3e7"
-        target="_blank"
-      >
-        https://github.com/login/oauth/authorize?client_id=9df57f381a50ef66d3e7
-      </a>
-    </div>
-  ),
+  component: Login,
 });
 export const authRoute = r.createRoute({
   path: "/auth",
