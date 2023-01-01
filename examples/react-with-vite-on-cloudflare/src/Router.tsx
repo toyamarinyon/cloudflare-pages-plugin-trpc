@@ -4,7 +4,8 @@ import {
   createRouteConfig,
   Outlet,
   RouterProvider,
-  useMatch,
+  useLoaderData,
+  useNavigate,
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { z } from "zod";
@@ -15,18 +16,11 @@ import { Login } from "./pages/Login";
 import { trpcClient } from "./trpcUtil";
 
 const AppGuard = () => {
-  const {
-    loaderData: { currentUser },
-    navigate,
-  } = useMatch(authenticatedRoute.id);
-  useEffect(() => {
-    if (currentUser == null) {
-      navigate({ to: loginRoute.id });
-    }
-  }, [navigate, currentUser]);
-
+  const { currentUser } = useLoaderData({ from: authenticatedRoute.id });
+  const navigate = useNavigate({ from: authenticatedRoute.id });
   if (currentUser == null) {
-    <></>;
+    navigate({ to: loginRoute.id });
+    return <></>;
   }
 
   return (

@@ -1,12 +1,12 @@
 import { useRouter, useSearch } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { authenticatedRoute } from "../Router";
+import { authenticatedRoute, authRoute } from "../Router";
 import { trpc } from "../trpcUtil";
 
 export const Auth = (): JSX.Element => {
   const { navigate } = useRouter();
 
-  const search = useSearch();
+  const search = useSearch({ from: authRoute.id});
   const { mutate } = trpc.auth.login.useMutation();
 
   useEffect(() => {
