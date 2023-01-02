@@ -114,17 +114,17 @@ const authenticationRouter = t.router({
 
         const users = await ctx.db.prepare("SELECT * FROM users").all();
         console.log(users?.results?.length);
-        const dbUser = await ctx.db
+        const user = await ctx.db
           .prepare("SELECT id FROM users WHERE github_user_id = ?")
           .bind(githubUser.id)
-          .first<{ id: number }>();
+          .all<{ id: number }>();
 
         console.log("d");
         /**
          * @todo use const
          */
-        let dbUserId = 0;
-        if (dbUser == null) {
+        let dbUserId = user?.results?.[0]?.id;
+        if (dbUserId == null) {
           await ctx.db
             .prepare(
               "INSERT INTO users (github_user_id, github_oauth_token) VALUES (?, ?)"
@@ -136,10 +136,9 @@ const authenticationRouter = t.router({
             .first<{ id: number }>();
           dbUserId = id;
         } else {
-          dbUserId = dbUser.id;
           await ctx.db
             .prepare("UPDATE users SET github_oauth_token = ? WHERE id = ?")
-            .bind(accessToken, dbUser.id)
+            .bind(accessToken, dbUserId)
             .run();
         }
         const sessionId = crypto.randomUUID();
