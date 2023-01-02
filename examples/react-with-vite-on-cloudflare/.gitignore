@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+.dev.vars
+wrangler.prod.toml
 
 # Editor directories and files
 .vscode/*

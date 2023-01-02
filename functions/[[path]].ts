@@ -1,4 +1,7 @@
-import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import {
+  FetchCreateContextFnOptions,
+  fetchRequestHandler,
+} from "@trpc/server/adapters/fetch";
 import type { PluginArgs } from "..";
 
 interface ResponseHeaderFn {
@@ -20,16 +23,19 @@ type tRPCPagesPluginFunction<
   Env = unknown,
   Params extends string = any,
   Data extends Record<string, unknown> = Record<string, unknown>
-> = PagesPluginFunction<Env, Params, Data, PluginArgs>;
+> = PagesPluginFunction<Env, Params, Data, PluginArgs<Env>>;
 
 export const onRequest: tRPCPagesPluginFunction = async ({
-  request,
   pluginArgs,
+  ...event
 }) => {
+  const { createContext, ...options } = pluginArgs;
   return fetchRequestHandler({
-    ...pluginArgs,
+    ...options,
     endpoint: pluginArgs.endpoint,
-    req: request,
+    createContext: async ({ req }) =>
+      await createContext({ req, env: event.env }),
+    req: event.request,
     responseMeta: (ops) => {
       const meta = pluginArgs.responseMeta?.(ops) ?? {};
       const headers = meta?.headers ?? {};

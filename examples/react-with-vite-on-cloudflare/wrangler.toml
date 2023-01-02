@@ -1,0 +1,8 @@
+name = "react-with-vite-on-cloudflare"
+compatibility_date = "2022-12-26"
+
+[[ d1_databases ]]
+binding = "DB" # i.e. available in your Worker on env.DB
+database_name = "example001"
+database_id = "eb5a523d-6956-4e7f-942a-7a8d3b946856"  # Replace with your ID from `wrangler d1 create`
+

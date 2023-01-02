@@ -1,23 +1,22 @@
 import type { FetchHandlerRequestOptions } from "@trpc/server/adapters/fetch";
-import type { AnyRouter } from "@trpc/server";
-import type { AnyZodObject } from "zod";
+import type { AnyRouter, inferRouterContext } from "@trpc/server";
 
-interface PluginOption {
-  session?:
-    | {
-        cookie?: string | null | undefined;
-        password: string;
-        scheme: AnyZodObject;
-      }
-    | null
-    | undefined;
-}
-export type PluginArgs = Omit<
+export type FetchCreateContextWithCloudflareEnvFnOptions<Env> = {
+  req: Request;
+  env: Env;
+};
+
+type FetchCreateContextWithCloudflareEnvFn<TRouter extends AnyRouter, Env> = (
+  opts: FetchCreateContextWithCloudflareEnvFnOptions<Env>
+) => inferRouterContext<TRouter> | Promise<inferRouterContext<TRouter>>;
+
+export type PluginArgs<Env> = Omit<
   FetchHandlerRequestOptions<AnyRouter>,
-  "req"
-> &
-  PluginOption;
+  "req" | "createContext"
+> & {
+  createContext: FetchCreateContextWithCloudflareEnvFn<AnyRouter, Env>;
+};
 
-export default function tRPCPagesPluginFunction(
-  args: PluginArgs
+export default function tRPCPagesPluginFunction<Env>(
+  args: PluginArgs<Env>
 ): PagesFunction;
