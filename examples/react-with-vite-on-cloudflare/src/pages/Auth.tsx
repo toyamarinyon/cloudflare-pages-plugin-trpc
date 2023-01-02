@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { z } from "zod";
 import { useRouter, useSearchParam } from "../router";
 import { trpc } from "../trpcUtil";
@@ -11,7 +11,7 @@ export const Auth = (): JSX.Element => {
   const { mutate } = trpc.auth.login.useMutation();
   const queryClient = useQueryClient();
 
-  const auth = useCallback(() => {
+  useEffect(() => {
     if (!searchParam.success) {
       return;
     }
@@ -31,5 +31,5 @@ export const Auth = (): JSX.Element => {
     );
   }, [mutate, router, searchParam, queryClient]);
 
-  return <><button onClick={auth}>a</button></>;
+  return <></>;
 };
