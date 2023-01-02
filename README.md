@@ -46,15 +46,28 @@ For example, if you write the below code, then you can use Cloudflare D1 from th
 ```ts
 import { initTRPC } from "@trpc/server";
 import { z } from "zod";
-import tRPCPlugin, { CloudflareEnv } from "cloudflare-pages-plugin-trpc";
+import tRPCPlugin, {
+  FetchCreateContextWithCloudflareEnvFnOptions,
+} from "cloudflare-pages-plugin-trpc";
 
 // Define binding to allow your worker to interact with Cloudflare D1.
 export interface Env {
   DB: D1Database;
 }
 
-// Explicit the binding to the tRPC context with `CloudflareEnv` type helper.
-const t = initTRPC.context<CloudflareEnv<Env>>().create();
+// Use the `FetchCreateContextWithCloudflareEnvFnOptions` type to function parameter to createContext, and it can expose Cloudflare Env to tRPC's context.
+const createContext = async ({
+  req,
+  env,
+}: FetchCreateContextWithCloudflareEnvFnOptions<Env>) => {
+  return {
+    db: env.DB,
+  };
+};
+
+// After that, it is enough to write it in the same way as for a normal tRPC
+type Context = inferAsyncReturnType<typeof createContext>;
+const t = initTRPC.context<Context>().create();
 
 const posts = t.router({
   create: t.procedure
@@ -90,7 +103,6 @@ export const onRequest: PagesFunction<Env> = tRPCPlugin({
   endpoint: "/api/trpc",
 });
 ```
-
 
 # What is tRPC ?
 
