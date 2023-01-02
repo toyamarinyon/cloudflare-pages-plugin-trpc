@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { z } from "zod";
 import { useRouter, useSearchParam } from "../router";
@@ -8,6 +9,7 @@ export const Auth = (): JSX.Element => {
 
   const searchParam = useSearchParam(z.object({ code: z.string() }));
   const { mutate } = trpc.auth.login.useMutation();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!searchParam.success) {
@@ -17,8 +19,10 @@ export const Auth = (): JSX.Element => {
       oauthToken: searchParam.data.code,
     });
 
-    router.push("/");
-  }, [mutate, router, searchParam]);
+    queryClient
+      .invalidateQueries(trpc.tasks.list.getQueryKey())
+      .then(() => router.push("/"));
+  }, [mutate, router, searchParam, queryClient]);
 
   return <></>;
 };

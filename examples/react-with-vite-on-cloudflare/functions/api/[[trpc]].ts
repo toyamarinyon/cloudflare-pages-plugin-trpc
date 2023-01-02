@@ -102,24 +102,17 @@ const authenticationRouter = t.router({
     .input(z.object({ oauthToken: z.string() }))
     .mutation(async ({ ctx, input }) => {
       try {
-        console.log("a");
         const accessToken = await getAccessToken({
           code: input.oauthToken,
           clientId: ctx.github.clientId,
           clientSecret: ctx.github.clientSecret,
         });
-        console.log("b");
         const githubUser = await getUser(accessToken);
-        console.log("c");
-
-        const users = await ctx.db.prepare("SELECT * FROM users").all();
-        console.log(users?.results?.length);
         const user = await ctx.db
           .prepare("SELECT id FROM users WHERE github_user_id = ?")
           .bind(githubUser.id)
           .all<{ id: number }>();
 
-        console.log("d");
         /**
          * @todo use const
          */
