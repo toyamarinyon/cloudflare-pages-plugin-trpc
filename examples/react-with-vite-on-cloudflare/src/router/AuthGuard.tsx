@@ -8,13 +8,13 @@ export const AuthGuard = ({
   children: ReactNode;
 }): JSX.Element => {
   const { router } = useRouter();
-  const { isInitialLoading, data } = trpc.auth.currentUser.useQuery();
+  const { isLoading, data } = trpc.auth.currentUser.useQuery();
   useEffect(() => {
-    if (!isInitialLoading && data?.currentUser == null) {
+    if (!isLoading && data?.currentUser == null) {
       router.push("/login");
     }
-  }, [isInitialLoading, data?.currentUser, router]);
-  if (isInitialLoading || data?.currentUser == null) {
+  }, [isLoading, data?.currentUser, router]);
+  if (isLoading || data?.currentUser == null) {
     return <></>;
   }
   return <>{children}</>;

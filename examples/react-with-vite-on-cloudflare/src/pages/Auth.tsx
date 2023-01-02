@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { z } from "zod";
 import { useRouter, useSearchParam } from "../router";
 import { trpc } from "../trpcUtil";
@@ -11,18 +11,25 @@ export const Auth = (): JSX.Element => {
   const { mutate } = trpc.auth.login.useMutation();
   const queryClient = useQueryClient();
 
-  useEffect(() => {
+  const auth = useCallback(() => {
     if (!searchParam.success) {
       return;
     }
-    mutate({
-      oauthToken: searchParam.data.code,
-    });
-
-    queryClient
-      .invalidateQueries(trpc.tasks.list.getQueryKey())
-      .then(() => router.push("/"));
+    mutate(
+      {
+        oauthToken: searchParam.data.code,
+      },
+      {
+        onSuccess: () => {
+          queryClient
+            .invalidateQueries(trpc.auth.currentUser.getQueryKey())
+            .then(() => {
+              router.push("/");
+            });
+        },
+      }
+    );
   }, [mutate, router, searchParam, queryClient]);
 
-  return <></>;
+  return <><button onClick={auth}>a</button></>;
 };
