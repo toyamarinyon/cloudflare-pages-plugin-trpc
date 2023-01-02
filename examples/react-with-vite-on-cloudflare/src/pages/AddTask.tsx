@@ -4,20 +4,20 @@ import { InputTextField } from "../components/FormField";
 import { Page } from "../components/Page";
 import { useForm } from "../hooks/useForm";
 import { trpc } from "../trpcUtil";
-import { useRouter } from "@tanstack/react-router";
-import { authenticatedRoute } from "../Router";
 import { CreateTaskPayload, createTaskScheme } from "../model/task";
+import { useRouter } from "../router";
 
 export const AddTask = (): JSX.Element => {
-  const { navigate } = useRouter();
+  const { router } = useRouter();
   const { mutateAsync, isLoading } = trpc.tasks.create.useMutation();
   const { register, handleSubmit } = useForm(createTaskScheme);
   const submit = useCallback(
     async (data: CreateTaskPayload) => {
       await mutateAsync(data);
-      await navigate({ to: authenticatedRoute.id });
+      router.push("/")
+
     },
-    [mutateAsync, navigate]
+    [mutateAsync, router]
   );
 
   return (

@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
-import { Router } from "./Router";
+import { Router } from "./router";
 import { links, trpc } from "./trpcUtil";
 
 export function App() {

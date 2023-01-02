@@ -7,6 +7,15 @@ const config = {
   ],
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
+  rules: {
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
+      },
+    ],
+  },
   root: true,
 };
 module.exports = config;

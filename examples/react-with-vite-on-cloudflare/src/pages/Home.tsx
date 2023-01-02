@@ -1,7 +1,6 @@
 import { trpc } from "../trpcUtil";
 import { PlusIcon } from "@heroicons/react/solid";
-import { addRoute } from "../Router";
-import { Link } from "@tanstack/react-router";
+import { Link } from "../router";
 import { Page } from "../components/Page";
 import { Task } from "../components/Task";
 
@@ -26,7 +25,7 @@ export const Home = (): JSX.Element => {
         </ul>
       )}
       <Link
-        to={addRoute.id}
+        to={"/tasks/new"}
         className="flex items-center space-x-1 text-slate-500"
       >
         <PlusIcon className="w-4" />
