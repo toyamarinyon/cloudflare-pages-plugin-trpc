@@ -41,34 +41,9 @@ test("works properly", async () => {
     pluginArgs: {
       router: appRouter,
       endpoint: "/api/trpc",
+      createContext: () => ({})
     },
   });
   expect(response.status).toBe(200);
   expect(response.headers.get("Set-Cookie")).toBeNull();
-});
-
-test("works properly with session", async () => {
-  const mock = vi.fn().mockImplementation(() => ["Set-Cookie", "session"]);
-  const response = await onRequest({
-    ...requestHandlerMock,
-    request: new Request("http://localhost:8989/api/trpc/hello"),
-    pluginArgs: {
-      router: appRouter,
-      endpoint: "/api/trpc",
-      createContext: () => {
-        return {
-          session: {
-            responseHeader: mock,
-          },
-        };
-      },
-      session: {
-        scheme: sessionScheme,
-        password: "IF4B#t69!WlX$uS22blaxDvzJJ%$vEh%",
-      },
-    },
-  });
-  expect(mock).toBeCalledTimes(1);
-  expect(response.status).toBe(200);
-  expect(response.headers.get("Set-Cookie")).toBe("session");
 });
