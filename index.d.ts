@@ -14,7 +14,7 @@ export type PluginArgs<Env> = Omit<
   FetchHandlerRequestOptions<AnyRouter>,
   "req" | "createContext"
 > & {
-  createContext: FetchCreateContextWithCloudflareEnvFn<AnyRouter, Env>;
+  createContext?: FetchCreateContextWithCloudflareEnvFn<AnyRouter, Env>;
 };
 
 export default function tRPCPagesPluginFunction<Env>(
