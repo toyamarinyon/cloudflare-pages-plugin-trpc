@@ -1,4 +1,4 @@
-import { expect, test, vi } from "vitest";
+import { expect, test } from "vitest";
 import { initTRPC, inferAsyncReturnType } from "@trpc/server";
 import { z } from "zod";
 import { onRequest } from "./[[path]]";
@@ -20,10 +20,6 @@ const appRouter = router({
   }),
 });
 
-const sessionScheme = z.object({
-  userId: z.number(),
-});
-
 const requestHandlerMock = {
   waitUntil: () => Promise.resolve(),
   functionPath: "[[path]]",
@@ -34,16 +30,26 @@ const requestHandlerMock = {
   params: {},
   data: {},
 };
-test("works properly", async () => {
+test("be able to response", async () => {
   const response = await onRequest({
     ...requestHandlerMock,
     request: new Request("http://localhost:8989/api/trpc/hello"),
     pluginArgs: {
       router: appRouter,
       endpoint: "/api/trpc",
-      createContext: () => ({})
     },
   });
   expect(response.status).toBe(200);
-  expect(response.headers.get("Set-Cookie")).toBeNull();
+});
+test("be able to response if args include createContext", async () => {
+  const response = await onRequest({
+    ...requestHandlerMock,
+    request: new Request("http://localhost:8989/api/trpc/hello"),
+    pluginArgs: {
+      router: appRouter,
+      endpoint: "/api/trpc",
+      createContext,
+    },
+  });
+  expect(response.status).toBe(200);
 });

@@ -1,7 +1,4 @@
-import {
-  FetchCreateContextFnOptions,
-  fetchRequestHandler,
-} from "@trpc/server/adapters/fetch";
+import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import type { PluginArgs } from "..";
 
 interface ResponseHeaderFn {
@@ -34,7 +31,7 @@ export const onRequest: tRPCPagesPluginFunction = async ({
     ...options,
     endpoint: pluginArgs.endpoint,
     createContext: async ({ req }) =>
-      await createContext({ req, env: event.env }),
+      createContext && (await createContext({ req, env: event.env })),
     req: event.request,
     responseMeta: (ops) => {
       const meta = pluginArgs.responseMeta?.(ops) ?? {};
