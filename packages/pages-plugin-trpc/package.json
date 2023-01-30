@@ -1,0 +1,30 @@
+{
+  "name": "cloudflare-pages-plugin-trpc",
+  "version": "0.2.2",
+  "description": "Cloudflare page plugin for tRPC",
+  "main": "dist/index.js",
+  "types": "index.d.ts",
+  "files": [
+    "dist/index.js",
+    "index.d.ts",
+    "tsconfig.json"
+  ],
+  "scripts": {
+    "test": "vitest",
+    "build": "npx wrangler pages functions build --plugin --outfile=dist/index.js",
+    "prepare": "npm run build"
+  },
+  "author": "@toyamarinyon",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^3.8.0",
+    "@trpc/server": "10.9.0",
+    "esbuild": "^0.14.46",
+    "vitest": "^0.15.1",
+    "wrangler": "^2.0.3",
+    "zod": "^3.20.2"
+  },
+  "peerDependencies": {
+    "@trpc/server": "10.9.0"
+  }
+}
