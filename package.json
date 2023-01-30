@@ -16,6 +16,7 @@
   },
   "scripts": {
     "build": "pnpm -r build",
+    "test": "pnpm -r test",
     "version": "changeset version",
     "release": "pnpm build && changeset publish"
   }
