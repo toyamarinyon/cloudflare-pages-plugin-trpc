@@ -1,6 +1,6 @@
 {
   "name": "cloudflare-pages-plugin-trpc",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Cloudflare page plugin for tRPC",
   "main": "dist/index.js",
   "types": "index.d.ts",
