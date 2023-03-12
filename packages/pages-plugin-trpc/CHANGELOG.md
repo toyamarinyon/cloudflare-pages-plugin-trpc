@@ -1,5 +1,11 @@
 # cloudflare-pages-plugin-trpc
 
+## 0.3.1
+
+### Patch Changes
+
+- [#16](https://github.com/toyamarinyon/cloudflare-pages-plugin-trpc/pull/16) [`228e606`](https://github.com/toyamarinyon/cloudflare-pages-plugin-trpc/commit/228e606abc995d12da898d4f18546deb9470439b) Thanks [@toyamarinyon](https://github.com/toyamarinyon)! - supports trpc v10.15.0
+
 ## 0.3.0
 
 ### Minor Changes
