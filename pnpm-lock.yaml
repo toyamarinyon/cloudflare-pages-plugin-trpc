@@ -13,14 +13,14 @@ importers:
   packages/pages-plugin-trpc:
     specifiers:
       '@cloudflare/workers-types': ^3.19.0
-      '@trpc/server': 10.15.0
+      '@trpc/server': 10.16.0
       esbuild: ^0.14.54
       vitest: ^0.15.2
       wrangler: ^2.12.2
       zod: ^3.21.4
     devDependencies:
       '@cloudflare/workers-types': 3.19.0
-      '@trpc/server': 10.15.0
+      '@trpc/server': 10.16.0
       esbuild: 0.14.54
       vitest: 0.15.2
       wrangler: 2.12.2
@@ -710,8 +710,8 @@ packages:
       fastq: 1.15.0
     dev: false
 
-  /@trpc/server/10.15.0:
-    resolution: {integrity: sha512-Kf+wTU5iZjjjEzqZDy+o5wc4nEZKvE0yWdF9qZa72xLu6eTJ0BS2hnwQZeCZ2pIbmQb8/6lFr5igHiY4/dy0mA==}
+  /@trpc/server/10.16.0:
+    resolution: {integrity: sha512-lCUq7AB7vcgrNbaN+xP/AN62OjKDgrRyG7fTDPv5K633ut7KJ3m57qs60VRBOgp9vow6elAg51pKFFDtPHbTRA==}
     dev: true
 
   /@types/better-sqlite3/7.6.3:

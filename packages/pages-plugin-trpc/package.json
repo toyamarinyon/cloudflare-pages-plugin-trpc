@@ -18,13 +18,13 @@
   "license": "MIT",
   "devDependencies": {
     "@cloudflare/workers-types": "^3.19.0",
-    "@trpc/server": "10.15.0",
+    "@trpc/server": "10.16.0",
     "esbuild": "^0.14.54",
     "vitest": "^0.15.2",
     "wrangler": "^2.12.2",
     "zod": "^3.21.4"
   },
   "peerDependencies": {
-    "@trpc/server": "10.15.0"
+    "@trpc/server": "10.16.0"
   }
 }
